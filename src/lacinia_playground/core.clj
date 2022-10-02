@@ -1,6 +1,4 @@
-(ns lacinia-playground.core)
+(ns lacinia-playground.core
+  (:import (java.lang Thread$UncaughtExceptionHandler)))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(println "This is runnign because of :repl-options on project.clj.")
