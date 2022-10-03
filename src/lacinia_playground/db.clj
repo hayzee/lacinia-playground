@@ -1,9 +1,18 @@
 (ns lacinia-playground.db
-  (:require [next.jdbc :as jdbc]))
+  (:require [next.jdbc :as jdbc]
+            [migratus.core :as migratus]
+            [clojure.java.io :as io]
+            [clojure.edn :as edn]))
 
 ; read this: https://cljdoc.org/d/com.github.seancorfield/next.jdbc/1.3.834/doc/getting-started
 
-(def db {:dbtype "h2" :dbname "example"})
+(def config (edn/read-string (slurp (io/resource "migrations/config.edn"))))
+
+(migratus/init config)
+
+(migratus/create config "customer")
+
+;(def db {:dbtype "h2" :dbname "example"})
 
 (def ds (jdbc/get-datasource db))
 
