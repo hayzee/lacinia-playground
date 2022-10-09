@@ -10,7 +10,7 @@
 (defmethod aero/reader 'envfile
   [{:keys [resolver source] :as opts} tag value]
   (let [ev-value (System/getenv (name value))]
-    (logging/log :info (str "Loading the configuration file at envvar:" value " for profile " profile))
+    (logging/log :info (str "Loading the configuration file at env:" value " for profile " profile))
     (if ev-value
       (try
         (aero/read-config
