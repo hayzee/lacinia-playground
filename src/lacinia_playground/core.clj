@@ -1,4 +1,5 @@
 (ns lacinia-playground.core
-  (:import (java.lang Thread$UncaughtExceptionHandler)))
+  (:require [clojure.tools.logging :as logging]))
 
-(println "This is runnign because of :repl-options on project.clj.")
+(logging/log :info (str *ns* " - requires implementation."))
+

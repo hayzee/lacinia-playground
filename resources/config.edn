@@ -1,0 +1,33 @@
+#merge [
+        ; System config common across all environments
+        {
+         :store                :database
+         ;defaults to true, some databases do not support
+         ;schema initialization in a transaction
+         :init-in-transaction? false
+         :migration-table-name "foo_bar"
+         :migration {:dir         "migrations/"
+                     :init-script "init.sql"}
+         }
+        ; System config specific to environments
+
+        #profile {
+
+                  :prod #envfile LACINIA_PLAYGROUND_CONFIG_FILE
+
+                  :dev   {
+                          :profile   :dev
+                          :log-level :info
+                          :db        {:dbtype "h2"
+                                      :dbname "example"}
+                          }
+
+                  :test  {
+                          :profile   :test
+                          :log-level :info
+                          :db        {:dbtype "h2"
+                                      :dbname "example"}
+                          }
+
+                  }
+        ]
