@@ -17,7 +17,7 @@
                  ; Configuration
                  [aero "1.1.6"]
 
-                 ; Database, JDBC, Pooling and MIgrations
+                 ; Database, JDBC, Pooling and Migrations
                  [com.h2database/h2 "1.4.200"]
                  [com.github.seancorfield/next.jdbc "1.3.834"]
                  [hikari-cp "2.14.0"]

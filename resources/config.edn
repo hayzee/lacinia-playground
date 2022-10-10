@@ -18,15 +18,19 @@
                   :dev   {
                           :profile   :dev
                           :log-level :info
-                          :db        {:dbtype "h2"
-                                      :dbname "example"}
+
+                          ; hikari
+                          :datasource-options {:adapter "h2"
+                                               :url     "jdbc:h2:~/example"}
                           }
 
                   :test  {
                           :profile   :test
                           :log-level :info
-                          :db        {:dbtype "h2"
-                                      :dbname "example"}
+
+                          ; hikari
+                          :datasource-options {:adapter "h2"
+                                               :url     "jdbc:h2:~/example"}
                           }
 
                   }

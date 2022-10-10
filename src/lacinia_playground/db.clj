@@ -4,7 +4,27 @@
             [clojure.edn :as edn]
             [mount.core :refer [defstate]]
             [hikari-cp.core :as hikari]
+            [next.jdbc :as jdbc]
             [lacinia-playground.config :as config]))
+
+;(def datasource-options {:dbtype "h2"
+;                         :dbname "example"})
+
+(def datasource-options {:adapter "h2"
+                         :url     "jdbc:h2:~/example"})
+
+(def datasource
+  (hikari-cp.core/make-datasource (:datasource-options (config/get-config))))
+
+(.close datasource)
+
+{:datasource @datasource}
+
+(defn -main [& args]
+  (jdbc/with-db-connection [conn {:datasource datasource}]
+                           (let [rows (jdbc/query conn "SELECT 0 FROM dual")]
+                             (println rows)))
+  (close-datasource @datasource))
 
 
 (comment
