@@ -1,15 +1,18 @@
 #merge [
-        ; System config common across all environments
-        {
-         :store                :database
-         ;defaults to true, some databases do not support
-         ;schema initialization in a transaction
-         :init-in-transaction? false
-         :migration-table-name "foo_bar"
-         :migration {:dir         "migrations/"
-                     :init-script "init.sql"}
-         }
-        ; System config specific to environments
+
+        ; Common
+
+        {:migratus {
+                    :store                :database
+                    ;defaults to true, some databases do not support
+                    ;schema initialization in a transaction
+                    :init-in-transaction? false
+                    :migration-table-name "foo_bar"
+                    :migration            {:dir         "migrations/"
+                                           :init-script "init.sql"}
+                    }}
+
+        ; Environment specific.
 
         #profile {
 

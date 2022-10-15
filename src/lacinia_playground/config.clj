@@ -5,7 +5,7 @@
             [clojure.tools.logging :as logging]
             [mount.core :as mount]))
 
-(def ^:dynamic profile :prod)
+(defonce ^:dynamic profile :prod)
 
 (defmethod aero/reader 'envfile
   [{:keys [resolver source] :as opts} tag value]
@@ -24,7 +24,7 @@
         (logging/log :error (str "Loading the configuration file at envvar:" value " for profile " profile))
         nil))))
 
-(defn load-config
+(defn- load-config
   []
   (do
     (logging/log :info (str "Loading the " profile " configuration"))
@@ -33,6 +33,6 @@
 (defstate config
           :start (load-config))
 
-(defn get-config
+(defn get-datasource-options
   []
-  config)
+  (:datasource-options config))

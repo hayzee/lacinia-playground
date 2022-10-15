@@ -6,14 +6,21 @@
     [clojure.java.browse :refer [browse-url]]
     [mount.core :refer [defstate]]))
 
-(defstate server
-          :start (->>
-                   (let [schema (schema/load-schema)]
-                     (-> schema
-                         ; todo - looks like service-map is deprecated since version upgrades.
-                         (lp/service-map {:graphiql true})
-                         http/create-server
-                         http/start)))
+(defn- start-http-server
+  []
+  (->>
+    (let [schema (schema/load-schema)]
+      (-> schema
+          ; todo - looks like service-map is deprecated since version upgrades.
+          (lp/service-map {:graphiql true})
+          http/create-server
+          http/start))))
 
-          :stop (http/stop server))
+(defn- stop-http-server
+  [server]
+  (http/stop server))
+
+(defstate server
+          :start (start-http-server)
+          :stop (stop-http-server server))
 
