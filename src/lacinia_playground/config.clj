@@ -1,9 +1,8 @@
 (ns lacinia-playground.config
-  (:require [mount.core :refer [defstate] :as mount]
+  (:require [mount.core :refer [defstate]]
             [aero.core :as aero]
             [clojure.java.io :as io]
-            [clojure.tools.logging :as logging]
-            [mount.core :as mount]))
+            [clojure.tools.logging :as logging]))
 
 (defonce ^:dynamic profile :prod)
 
@@ -19,10 +18,11 @@
            (resolver source ev-value))
          opts)
         (catch Exception ex
-          ))
+          (logging/log :fatal ex)
+          (System/exit -1)))
       (do
-        (logging/log :error (str "Loading the configuration file at envvar:" value " for profile " profile))
-        nil))))
+        (logging/log :fatal (str "Loading the configuration file at envvar:" value " for profile " profile))
+        (System/exit -1)))))
 
 (defn- load-config
   []
