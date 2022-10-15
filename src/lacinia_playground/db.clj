@@ -11,7 +11,7 @@
 
 (defn- initialise-hikari-pool
   []
-  (let [dso (config/get-datasource-options)]
+  (let [dso (config/datasource-options)]
     (logging/log :info (str "Initialise Hikari pool using datasource-options:" dso))
     (hikari/make-datasource dso)))
 

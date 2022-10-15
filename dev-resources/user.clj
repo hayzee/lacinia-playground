@@ -7,11 +7,8 @@
             [clojure.tools.logging :as logging]))
 
 (defn start
-  [& {:keys [profile & rest]
+  [& {:keys [profile]
       :or {profile :dev}}]
-
-  (println  rest)
-
   (logging/log :info (str "Starting " profile " System"))
   ;  (tn/refresh)
   (binding [config/profile profile]
@@ -28,13 +25,17 @@
 
 (defn reset-migrations
   []
- (migratus/init (get-in config/config [:migration :dir])))
+ (migratus/init (get-in (:migratus config/config) [:migration :dir])))
 
 (defn create-migration
   [desc]
-  (migratus/create (get-in config/config [:migration :dir] ) desc))
+  (migratus/create (get-in (:migratus config/config) [:migration :dir] ) desc))
 
 
 (defn migrate
   []
-  (migratus/migrate (get-in config/config [:migration :dir])))
+  (migratus/migrate (:migratus config/config)))
+
+
+
+(migratus/init (:migratus config/config))

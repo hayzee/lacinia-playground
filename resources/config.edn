@@ -10,6 +10,9 @@
                     :migration-table-name "foo_bar"
                     :migration            {:dir         "migrations/"
                                            :init-script "init.sql"}
+
+                    :db {:dbtype "h2"
+                         :dbname "~/example"}
                     }}
 
         ; Environment specific.

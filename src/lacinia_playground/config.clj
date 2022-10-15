@@ -33,6 +33,6 @@
 (defstate config
           :start (load-config))
 
-(defn get-datasource-options
+(defn datasource-options
   []
   (:datasource-options config))
