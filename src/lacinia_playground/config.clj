@@ -31,8 +31,16 @@
     (aero/read-config (io/resource "config.edn") {:profile profile})))
 
 (defstate config
-          :start (load-config))
+          :start (merge
+                   {:profile profile}
+                   (load-config)))
 
 (defn datasource-options
   []
   (:datasource-options config))
+
+(defn migratus
+  [datasource]
+  (merge
+   (:migratus config)
+   {:db {:datasource datasource}}))

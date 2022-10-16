@@ -19,23 +19,20 @@
   (mount/stop))
 
 (defn restart []
-  (let [profile (:profile config/config)]
+  (let [profile (or (:profile config/config) :dev)]
     (stop)
-    (start profile)))
+    (start :profile profile)))
 
 (defn reset-migrations
   []
- (migratus/init (get-in (:migratus config/config) [:migration :dir])))
+ (migratus/init (-> (config/migratus db/datasource)
+                    (get-in [:migration :dir]))))
 
 (defn create-migration
   [desc]
-  (migratus/create (get-in (:migratus config/config) [:migration :dir] ) desc))
-
+  (migratus/create (-> (config/migratus db/datasource)
+                       (get-in [:migration :dir])) desc))
 
 (defn migrate
   []
-  (migratus/migrate (:migratus config/config)))
-
-
-
-(migratus/init (:migratus config/config))
+  (migratus/migrate (config/migratus db/datasource)))
