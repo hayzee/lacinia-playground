@@ -1,27 +1,20 @@
 (ns user
-  (:require [mount.core :as mount]
-            [lacinia-playground.config :as config]
-            [lacinia-playground.server :as server]
-            [lacinia-playground.db :as db]
+  (:require [lacinia-playground.system :as system]
+            [lacinia-playground.components.config :as config]
+            [lacinia-playground.components.db :as db]
             [migratus.core :as migratus]
-            [clojure.tools.logging :as logging]))
+            [clojure.java.browse :refer [browse-url]]))
 
 (defn start
-  [& {:keys [profile]
-      :or {profile :dev}}]
-  (logging/log :info (str "Starting " profile " System"))
-  ;  (tn/refresh)
-  (binding [config/profile profile]
-    (mount/start)))
+  []
+  (system/start :dev)
+  (browse-url "http://localhost:8888/"))
 
 (defn stop []
-  (logging/log :info "Stopping System")
-  (mount/stop))
+  (system/stop))
 
 (defn restart []
-  (let [profile (or (:profile config/config) :dev)]
-    (stop)
-    (start :profile profile)))
+  (system/restart))
 
 (defn reset-migrations
   []

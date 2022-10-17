@@ -1,15 +1,14 @@
-(ns lacinia-playground.server
+(ns lacinia-playground.components.server
   (:require
     [com.walmartlabs.lacinia.pedestal :as lp]
     [io.pedestal.http :as http]
-    [lacinia-playground.schema :as schema]
-    [clojure.java.browse :refer [browse-url]]
+    [lacinia-playground.components.schema :as schema]
     [mount.core :refer [defstate]]))
 
 (defn- start-http-server
   []
   (->>
-    (let [schema (schema/load-schema)]
+    (let [schema schema/schema]
       (-> schema
           ; todo - looks like service-map is deprecated since version upgrades.
           (lp/service-map {:graphiql true})

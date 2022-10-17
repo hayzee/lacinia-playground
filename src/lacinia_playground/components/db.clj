@@ -1,12 +1,7 @@
-(ns lacinia-playground.db
+(ns lacinia-playground.components.db
   (:require [mount.core :refer [defstate]]
-            [next.jdbc :as jdbc]
-            [clojure.java.io :as io]
-            [clojure.edn :as edn]
-            [mount.core :refer [defstate]]
             [hikari-cp.core :as hikari]
-            [next.jdbc :as jdbc]
-            [lacinia-playground.config :as config]
+            [lacinia-playground.components.config :as config]
             [clojure.tools.logging :as logging]))
 
 (defn- initialise-hikari-pool
@@ -23,6 +18,14 @@
 (defstate datasource
           :start (initialise-hikari-pool)
           :stop (close-hikari-pool datasource))
+
+(defn execute!
+  [sql]
+  (next.jdbc/execute! datasource sql))
+
+(defn execute-one!
+  [sql]
+  (next.jdbc/execute-one! datasource sql))
 
 ; TODO - IGNORE BELOW THIS LINE FOR NOW
 
@@ -85,3 +88,4 @@
 ;
 ; (create-database)
 ; )
+

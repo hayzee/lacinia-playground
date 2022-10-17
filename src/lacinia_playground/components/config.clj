@@ -1,4 +1,4 @@
-(ns lacinia-playground.config
+(ns lacinia-playground.components.config
   (:require [mount.core :refer [defstate]]
             [aero.core :as aero]
             [clojure.java.io :as io]
