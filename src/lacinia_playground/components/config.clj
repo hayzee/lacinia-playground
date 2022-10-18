@@ -35,12 +35,3 @@
                    {:profile profile}
                    (load-config)))
 
-(defn datasource-options
-  []
-  (:datasource-options config))
-
-(defn migratus
-  [datasource]
-  (merge
-   (:migratus config)
-   {:db {:datasource datasource}}))

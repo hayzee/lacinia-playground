@@ -7,13 +7,13 @@
             [lacinia-playground.components.config :as config]
             [lacinia-playground.components.server :as server]
             [lacinia-playground.components.schema :as schema]
-            [lacinia-playground.components.db :as db]
-
-            ))
+            [lacinia-playground.components.db :as db]))
 
 (defstate migratus-config
           :start
-          (config/migratus db/datasource))
+          (merge
+            (:migratus config/config)
+            {:db {:datasource db/datasource}}))
 
 (defn start
   [profile]
