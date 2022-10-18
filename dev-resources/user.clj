@@ -1,7 +1,5 @@
 (ns user
   (:require [lacinia-playground.system :as system]
-            [lacinia-playground.components.config :as config]
-            [lacinia-playground.components.db :as db]
             [migratus.core :as migratus]
             [clojure.java.browse :refer [browse-url]]))
 
@@ -18,16 +16,16 @@
 
 (defn reset-migrations
   []
- (migratus/init (config/migratus db/datasource)))
+ (migratus/init system/migratus-config))
 
 (defn rollback-migration
   []
-  (migratus/rollback (config/migratus db/datasource)))
+  (migratus/rollback system/migratus-config))
 
 (defn create-migration
   [desc]
-  (migratus/create (config/migratus db/datasource) desc))
+  (migratus/create system/migratus-config desc))
 
 (defn migrate
   []
-  (migratus/migrate (config/migratus db/datasource)))
+  (migratus/migrate system/migratus-config))

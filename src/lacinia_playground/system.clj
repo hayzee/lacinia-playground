@@ -1,5 +1,5 @@
 (ns lacinia-playground.system
-  (:require [mount.core :as mount]
+  (:require [mount.core :refer [defstate] :as mount]
             [clojure.tools.logging :as logging]
             [migratus.core :as migratus]
 
@@ -11,12 +11,16 @@
 
             ))
 
+(defstate migratus-config
+          :start
+          (config/migratus db/datasource))
+
 (defn start
   [profile]
   (logging/log :info (str "Starting " profile " System"))
   (binding [config/profile profile]
     (mount/start)
-    (migratus/migrate (config/migratus db/datasource))))
+    (migratus/migrate migratus-config)))
 
 (defn stop
   []
