@@ -1,4 +1,4 @@
-(ns lacinia-playground.components.db
+(ns lacinia-playground.components.datasource
   (:require [mount.core :refer [defstate]]
             [hikari-cp.core :as hikari]
             [lacinia-playground.components.config :as config]
