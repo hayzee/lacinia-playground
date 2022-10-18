@@ -8,8 +8,8 @@
                     ;schema initialization in a transaction
                     :init-in-transaction? false
                     :migration-table-name "migratus_migrations"
-                    :migration            {:dir         "migrations/"
-                                           :init-script "init.sql"}}}
+                    :migration-:dir         "migrations/"
+                    :init-script "init.sql"}}
 
         ; Profile specific:
 

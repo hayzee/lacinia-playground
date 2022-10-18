@@ -18,13 +18,15 @@
 
 (defn reset-migrations
   []
- (migratus/init (-> (config/migratus db/datasource)
-                    (get-in [:migration :dir]))))
+ (migratus/init (config/migratus db/datasource)))
+
+(defn rollback-migration
+  []
+  (migratus/rollback (config/migratus db/datasource)))
 
 (defn create-migration
   [desc]
-  (migratus/create (-> (config/migratus db/datasource)
-                       (get-in [:migration :dir])) desc))
+  (migratus/create (config/migratus db/datasource) desc))
 
 (defn migrate
   []
