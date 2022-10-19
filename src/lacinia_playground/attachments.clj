@@ -1,60 +1,33 @@
 (ns lacinia-playground.attachments
   (:import (java.text SimpleDateFormat)))
 
-(defn find-all-in-episode-xx
-  [context args value]
-
-  [{:name "Obi-Wan Kenobi", :episodes ["NEWHOPE" "EMPIRE" "JEDI"]}
-   {:name "Darth Vader", :episodes ["NEWHOPE" "EMPIRE" "JEDI"]}
-   {:name "Chewbacca", :episodes ["NEWHOPE" "EMPIRE" "JEDI"]}
-   {:name "Princess Leia", :episodes ["NEWHOPE" "EMPIRE" "JEDI"]}
-   {:name "R2-D2", :episodes ["NEWHOPE" "EMPIRE" "JEDI"]}
-   {:name "C3-PO", :episodes ["NEWHOPE" "EMPIRE" "JEDI"]}]
-
-  #_[{:name "Boris Karloff 888"
-    :episodes [:NEWHOPE :EMPIRE "JEDI"]}
-   {:name "Boris Karloff 999"
-    :episodes [:NEWHOPE :EMPIRE :JEDI]}
-   {:name "Boris Karloff 333"
-    :episodes [:NEWHOPE :EMPIRE :JEDI]}
-   {:name "Boris Karloff 444"
-    :episodes [:NEWHOPE :EMPIRE :JEDI]}
-   {:name "Boris Karloff 5"
-    :episodes [:NEWHOPE :EMPIRE :JEDI]}
-   {:name "Boris Karloff 6"
-    :episodes [:NEWHOPE :EMPIRE :JEDI]}
-   {:name "Boris Karloff 7"
-    :episodes [:NEWHOPE :EMPIRE :JEDI]}
-   {:name "Boris Karloff 8"
-    :episodes [:NEWHOPE :EMPIRE :JEDI]}
-   {:name "Boris Karloff 9"
-    :episodes [:NEWHOPE :EMPIRE :JEDI]}
-   {:name "Boris Karloff 10"
-    :episodes [:NEWHOPE :EMPIRE :JEDI]}])
-
-
-(defn apply-fns-to-row [fns row]
-  (mapv (fn [f attr] (f attr)) fns row))
-
-(defn apply-fns-to-rows [fns rows]
-  (mapv #(apply-fns-to-row fns %) rows))
+;
+;(defn apply-fns-to-row [fns row]
+;  (mapv (fn [f attr] (f attr)) fns row))
+;
+;(defn apply-fns-to-rows [fns rows]
+;  (mapv #(apply-fns-to-row fns %) rows))
 
 (defn find-all-in-episode
   [context args value]
+  (lacinia-playground.db/execute! ["
+          SELECT
+          id,
+          to_char(SC.NAME) as name
+          FROM   starwars_character sc"]))
+
+(defn episodes
+  [context args value]
+
+  (clojure.tools.logging/log :info (str "episodes - args: " args))
+
   (->> (lacinia-playground.db/execute! ["
-          SELECT to_char(SC.NAME) as name,
-                 CE.EPISODE
-          FROM   starwars_character sc
-                 JOIN character_episode ce
-                   ON ce.CHARACTER_ID  = sc.ID"])
-       (group-by :name)
-       (apply-fns-to-rows [#(vector :name %)
-                           #(vector :episodes (mapv :episode %))])
-       ;(map #(vector (first %)))
-       (mapv (partial into {}))
-      ))
-
-
+          SELECT episode
+          FROM   character_episode ce
+          WHERE  ce.CHARACTER_ID = ?
+          AND    rownum <= ?
+                   " (:id value) (:first args)])
+      (mapv :episode)))
 
 (defn add-character [context args value]
   true)
@@ -68,7 +41,7 @@
   {
    :resolvers {:Query    {:find_all_in_episode find-all-in-episode}
                :Mutation {:add_character add-character}
-               :Character {:episodes (constantly ["EMPIRE"])}}
+               :Character {:episodes episodes}}
 
    :documentation {:Character                         "A Star Wars character"
                    :Character/name                    "Character name"
