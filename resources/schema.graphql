@@ -17,11 +17,11 @@ input CharacterArg {
 }
 
 type Query {
-    find_all_in_episode(episode: episode!) : [Character]
+    find_all_in_episode(episode: episode!): [Character]
 }
 
 type Mutation {
-    add_character(character: CharacterArg!) : Boolean
+    add_character(character: CharacterArg!): Boolean
 }
 
 schema {

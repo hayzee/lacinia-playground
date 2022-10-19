@@ -29,3 +29,9 @@
 (defn migrate
   []
   (migratus/migrate system/migratus-config))
+
+(defn see
+  [msg o]
+  (println msg)
+  (clojure.pprint/pprint o)
+  o)
