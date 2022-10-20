@@ -1,2 +1,2 @@
-drop table character_episode;
-drop table starwars_character;
+DROP TABLE character_episode;
+DROP TABLE starwars_character;

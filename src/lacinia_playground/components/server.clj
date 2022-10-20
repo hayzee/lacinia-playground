@@ -22,4 +22,3 @@
 (defstate server
           :start (start-http-server)
           :stop (stop-http-server server))
-

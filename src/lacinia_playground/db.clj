@@ -10,4 +10,3 @@
 (defn execute!
   [sql]
   (jdbc/execute! datasource sql {:builder-fn rs/as-unqualified-lower-maps}))
-
