@@ -7,6 +7,12 @@
   []
   (jdbc/get-connection datasource))
 
+(defn datasource-logger
+  [sym sql-params]
+  (clojure.tools.logging/log :info [sym sql-params]))
+
 (defn execute!
   [sql]
-  (jdbc/execute! datasource sql {:builder-fn rs/as-unqualified-lower-maps}))
+  (let [logging-datasource (jdbc/with-logging datasource
+                                              datasource-logger)]
+    (jdbc/execute! logging-datasource sql {:builder-fn rs/as-unqualified-lower-maps})))

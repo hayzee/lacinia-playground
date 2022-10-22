@@ -33,3 +33,9 @@ SELECT sc.id,
 FROM starwars_character sc
      JOIN (SELECT x FROM generate_series(1,3) x)
      ;
+
+DELETE FROM character_episode WHERE episode = 'NEWHOPE' AND character_id IN (1, 3, 5);
+
+DELETE FROM character_episode WHERE episode = 'EMPIRE' AND character_id IN (2, 4, 6);
+
+DELETE FROM character_episode WHERE episode = 'JEDI' AND character_id IN (5, 2, 1);
