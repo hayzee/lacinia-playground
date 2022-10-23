@@ -2,12 +2,6 @@
   (:require [lacinia-playground.db :as db])
   (:import (java.text SimpleDateFormat)))
 
-;(defn apply-fns-to-row [fns row]
-;  (mapv (fn [f attr] (f attr)) fns row))
-;
-;(defn apply-fns-to-rows [fns rows]
-;  (mapv #(apply-fns-to-row fns %) rows))
-
 (defn find-all-in-episode
   [context args value]
   (db/execute! ["
@@ -18,15 +12,6 @@
                  JOIN character_episode ce
                    ON ce.character_id = sc.id
                   AND ce.episode = ?" (name (:episode args))]))
-
-(comment
-
-  (db/execute! ["
-            SELECT episode
-            FROM   character_episode ce
-                     " ])
-
-  )
 
 (defn episodes
   [context args value]
@@ -39,14 +24,15 @@
        (mapv :episode)
        ))
 
-(comment
-  (episodes {} {:first 9} {:id 3})
-  )
-
 (defn add-character [context args value]
-  ; {:character {:name Johan Bastard, :episodes [:NEWHOPE]}}
-;  (db/execute! "INSERT INTO character ")
-  true)
+
+  (let [{id :id} (db/execute-one! ["SELECT COALESCE(MAX(id)+1,1) AS id FROM starwars_character sc"])
+        _        (db/execute-one! ["INSERT INTO starwars_character  VALUES (?, ?)" id (get-in args [:character :name])])
+        _        (doseq [episode (get-in args [:character :episodes])]
+                   (println episode)
+                   (db/execute-one! ["INSERT INTO character_episode VALUES (?, ?)" id (name episode)]))
+        ]
+       id))
 
 (def date-formatter
   "Used by custom scalar :Date."

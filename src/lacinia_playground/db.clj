@@ -16,3 +16,9 @@
   (let [logging-datasource (jdbc/with-logging datasource
                                               datasource-logger)]
     (jdbc/execute! logging-datasource sql {:builder-fn rs/as-unqualified-lower-maps})))
+
+(defn execute-one!
+  [sql]
+  (let [logging-datasource (jdbc/with-logging datasource
+                                              datasource-logger)]
+    (jdbc/execute-one! logging-datasource sql {:builder-fn rs/as-unqualified-lower-maps})))

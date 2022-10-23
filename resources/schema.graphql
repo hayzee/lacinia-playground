@@ -21,7 +21,7 @@ type Query {
 }
 
 type Mutation {
-    add_character(character: CharacterArg!): Boolean
+    add_character(character: CharacterArg!): Int
 }
 
 schema {
