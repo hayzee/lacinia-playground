@@ -9,9 +9,10 @@
           id,
           to_char(SC.NAME) as name
           FROM   starwars_character sc
-                 JOIN character_episode ce
-                   ON ce.character_id = sc.id
-                  AND ce.episode = ?" (name (:episode args))]))
+          WHERE EXISTS (SELECT 1
+                        FROM   character_episode ce
+                        WHERE  ce.character_id = sc.id
+                        AND ce.episode = ?)" (name (:episode args))]))
 
 (defn episodes
   [context args value]
@@ -21,8 +22,7 @@
           WHERE  ce.CHARACTER_ID = ?
           AND    (rownum <= ? OR ? IS NULL)
                    " (:id value) (:first args) (:first args)])
-       (mapv :episode)
-       ))
+       (mapv :episode)))
 
 (defn add-character [context args value]
 
