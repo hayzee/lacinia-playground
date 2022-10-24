@@ -18,11 +18,9 @@
            (resolver source ev-value))
          opts)
         (catch Exception ex
-          (logging/log :fatal ex)
-          (System/exit -1)))
+          (logging/log :fatal ex)))
       (do
-        (logging/log :fatal (str "Loading the configuration file at envvar:" value " for profile " profile))
-        (System/exit -1)))))
+        (throw (new Exception (str "Environment variable " value " not set")))))))
 
 (defn- load-config
   []

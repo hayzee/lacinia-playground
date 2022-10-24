@@ -36,4 +36,9 @@
                              [com.h2database/h2 "1.4.200"]
                              [org.clojure/tools.namespace "1.3.0"]
 
-                             ]}})
+                             ]}}
+
+  :repl-options {:init-ns user}
+
+  :main lacinia-playground.core
+  :aot [lacinia-playground.core])
