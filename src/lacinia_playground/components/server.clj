@@ -11,7 +11,8 @@
     (let [schema schema/schema]
       (-> schema
           ; todo - looks like service-map is deprecated since version upgrades.
-          (lp/service-map {:graphiql true})
+          (lp/service-map {:graphiql true
+                           :host "0.0.0.0"})
           http/create-server
           http/start))))
 
