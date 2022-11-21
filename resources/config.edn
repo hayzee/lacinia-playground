@@ -11,7 +11,7 @@
                     :migration-:dir         "migrations/"
                     :init-script "init.sql"}}
 
-        ; Profile specific:
+        ; Profile specifics:
 
         #profile {
 
