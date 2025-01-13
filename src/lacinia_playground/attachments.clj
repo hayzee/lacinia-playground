@@ -1,5 +1,6 @@
 (ns lacinia-playground.attachments
-  (:require [lacinia-playground.db :as db])
+  (:require [lacinia-playground.db :as db]
+            [com.walmartlabs.lacinia.schema :as schema])
   (:import (java.text SimpleDateFormat)))
 
 (defn find-all-in-episode
@@ -34,14 +35,59 @@
         ]
        id))
 
+(defn get-person [context args value]
+  (println :args args :value value)
+  (schema/tag-with-type
+   {:id            12345
+    :name          "Chary Farnesbarnes"
+    :nastinessScore -99
+    :nicenessScore 99
+    }
+   :NastyPerson))
+
 (def date-formatter
   "Used by custom scalar :Date."
   (SimpleDateFormat. "yyyy-MM-dd"))
 
+(def nice-people [(schema/tag-with-type
+                    {:id            654321
+                     :name          "Bob Nice"
+                     :nastinessScore 0
+                     :nicenessScore 999
+                     }
+                    :NicePerson)
+                  (schema/tag-with-type
+                    {:id            54321
+                     :name          "Sally Sunshine"
+                     :nastinessScore 0
+                     :nicenessScore 888
+                     }
+                    :NicePerson)])
+
+(def nasty-people [(schema/tag-with-type
+                     {:id            12346
+                      :name          "Billy Nasty"
+                      :nastinessScore 999
+                      :nicenessScore 0
+                      }
+                     :NastyPerson)
+                   (schema/tag-with-type
+                     {:id            12345
+                      :name          "Chary Farnesbarnes"
+                      :nastinessScore 888
+                      :nicenessScore 0
+                      }
+                     :NastyPerson)])
+
+(def all-people (into nice-people nasty-people))
+
 (defn attachments
   []
-  {
-   :resolvers {:Query    {:find_all_in_episode find-all-in-episode}
+  {:resolvers {:Query    {:find_all_in_episode find-all-in-episode
+                          :get_person get-person
+                          :allPeople (constantly all-people)
+                          :nicePeople (constantly nice-people)
+                          :nastyPeople (constantly nasty-people)}
                :Mutation {:add_character add-character}
                :Character {:episodes episodes}}
 

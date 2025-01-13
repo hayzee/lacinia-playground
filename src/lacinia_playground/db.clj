@@ -3,13 +3,13 @@
             [lacinia-playground.components.datasource :refer [datasource]]
             [next.jdbc.result-set :as rs]))
 
-(defn get-pooled-connection
-  []
-  (jdbc/get-connection datasource))
+;(defn get-connection
+;  []
+;  (jdbc/get-connection datasource))
 
-(defn datasource-logger
+(defn- datasource-logger
   [sym sql-params]
-  (clojure.tools.logging/log :info [sym sql-params]))
+  (clojure.tools.logging/log :warn [sym sql-params]))
 
 (defn execute!
   [sql]

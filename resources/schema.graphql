@@ -17,15 +17,64 @@ input CharacterArg {
     episodes: [episode]!
 }
 
+enum AccountType {CUSTOMER CLIENT}
+
+interface Account {
+    accountReference: String
+    accountName: String
+    accountType: AccountType
+}
+
+input AccountInput {
+    accountReference: String
+    accountName: String
+    accountType: AccountType
+}
+
+interface Person {
+    id: Int!
+    name: String!
+}
+
+type NicePerson implements Person {
+    id: Int!
+    name: String!
+    nicenessScore: Int!
+}
+
+type NastyPerson implements Person {
+    id: Int!
+    name: String!
+    nastinessScore: Int!
+}
+
+#query PersonQuery {
+#
+#}
+#
+#fragment PersonFields on Person {
+#    id
+#    name
+#}
+
+
 type Query {
+    allPeople: [Person]
+    nicePeople: [Person]
+    nastyPeople: [Person]
     find_all_in_episode(episode: episode!): [Character]
+    get_person(id: Int): Person
 }
 
 type Mutation {
     add_character(character: CharacterArg!): Int
+    create_account(account: AccountInput): Account
 }
 
 schema {
     query: Query
     mutation: Mutation
+
 }
+
+
