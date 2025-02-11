@@ -1,10 +1,28 @@
+# DIRECTIVES
+
+enum Role {PUBLIC, CUSTOMER, BANK}
+
+directive @permissions (
+    roles: [Role!]!
+)
+on FIELD_DEFINITION | SCHEMA | OBJECT | MUTATION
+
+directive @cheesiness (
+    level: [Int!]!
+)
+on FIELD_DEFINITION
+
+# SCALARS
+
+scalar Date
+
+# OBJECTS
+
 enum episode {
     NEWHOPE
     EMPIRE
     JEDI
 }
-
-scalar Date
 
 type Character {
     id: Int!
@@ -34,47 +52,112 @@ input AccountInput {
 interface Person {
     id: Int!
     name: String!
+    friends: [Person]
 }
 
 type NicePerson implements Person {
     id: Int!
     name: String!
     nicenessScore: Int!
+    friends: [Person]
 }
 
 type NastyPerson implements Person {
     id: Int!
     name: String!
     nastinessScore: Int!
+    friends: [Person]
 }
 
-#query PersonQuery {
-#
-#}
-#
-#fragment PersonFields on Person {
-#    id
-#    name
-#}
+type Thing {
+    id: String!
+    name: String!
+    things: [Thing]
+}
 
+
+type Mutation {
+    add_character(character: CharacterArg!): Int
+    create_account(account: AccountInput): Account
+    update_account (account: AccountInput): Account @permissions(roles:[])
+}
+
+type Address {
+    house_name_or_number: String
+    addr_line1: String
+    addr_line2: String
+    town: String
+    city: String
+    postCode: String
+}
+
+type Customer {
+    name: String!
+    address: Address
+}
+
+input AddressInput # @address(name: "Bob") {
+{
+    house_name_or_number: String
+    addr_line1: String
+    addr_line2: String
+    town: String
+    city: String
+    postCode: String
+}
+
+input CustomerFilter {
+    name: String!
+    address: AddressInput
+}
+
+#directive @address (
+#    name: String!
+#)
+#on INPUT_OBJECT
+
+
+input CustomerInput {
+    name: String!
+    address: AddressInput
+}
+
+type Bank @permissions(roles: [BANK]){
+    name: String!
+    privates: [String!]
+}
+
+type Client {
+    name: String!
+}
 
 type Query {
+    bank: Bank @permissions(roles: [BANK]) @cheesiness(level: 10)
+    customer: Customer
+    client: Client
+
     allPeople: [Person]
     nicePeople: [Person]
     nastyPeople: [Person]
     find_all_in_episode(episode: episode!): [Character]
     get_person(id: Int): Person
+    things: [Thing]
 }
 
-type Mutation {
-    add_character(character: CharacterArg!): Int
-    create_account(account: AccountInput): Account
+type Subscription {
+    burp: String
 }
 
-schema {
+schema @permissions(roles: [BANK CUSTOMER])
+{
     query: Query
     mutation: Mutation
-
+    subscription: Subscription
 }
 
+#fragment thingData on Thing {
+#    id
+#    name
+#}
+#
 

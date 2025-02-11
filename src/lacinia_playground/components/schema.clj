@@ -17,3 +17,8 @@
 
 (defstate schema
           :start (load-schema))
+
+
+;(-> (parser-schema/parse-schema (slurp (clojure.java.io/resource "schema.graphql"))
+;                             #_(attachments/attachments))
+;    (util/attach-streamers {:Subscription {:fields {:burp {:type String}}}}))
