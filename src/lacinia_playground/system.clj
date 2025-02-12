@@ -19,7 +19,13 @@
   [profile]
   (logging/log :info (str "Starting " profile " System"))
   (binding [config/profile profile]
-    (mount/start)
+    (mount/start #'config/config
+                 #'datasource/datasource
+                 #'schema/schema
+                 #'server/service
+                 #'server/runnable-service
+                 #'server/server
+                 #'migratus-config)
     (migratus/migrate migratus-config)))
 
 (defn stop

@@ -8,8 +8,8 @@
                  [org.clojure/clojure "1.11.0"]
 
                  ; Lacinia/GraphQL
-                 [com.walmartlabs/lacinia "1.2-alpha-3"]
-                 [com.walmartlabs/lacinia-pedestal "1.1"]
+                 [com.walmartlabs/lacinia "1.2.2"]
+                 [com.walmartlabs/lacinia-pedestal "1.3.1"]
 
                  ; Components
                  [mount "0.1.16"]

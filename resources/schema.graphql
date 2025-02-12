@@ -1,6 +1,6 @@
 # DIRECTIVES
 
-enum Role {PUBLIC, CUSTOMER, BANK}
+enum Role {CREATE READ UPDATE DELETE}
 
 directive @permissions (
     roles: [Role!]!
@@ -18,146 +18,38 @@ scalar Date
 
 # OBJECTS
 
-enum episode {
-    NEWHOPE
-    EMPIRE
-    JEDI
-}
-
-type Character {
-    id: Int!
-    name: String!
-    episodes(first: Int): [episode]
-}
-
-input CharacterArg {
-    name: String!
-    episodes: [episode]!
-}
-
-enum AccountType {CUSTOMER CLIENT}
-
-interface Account {
-    accountReference: String
-    accountName: String
-    accountType: AccountType
-}
-
-input AccountInput {
-    accountReference: String
-    accountName: String
-    accountType: AccountType
-}
-
-interface Person {
-    id: Int!
-    name: String!
-    friends: [Person]
-}
-
-type NicePerson implements Person {
-    id: Int!
-    name: String!
-    nicenessScore: Int!
-    friends: [Person]
-}
-
-type NastyPerson implements Person {
-    id: Int!
-    name: String!
-    nastinessScore: Int!
-    friends: [Person]
-}
-
 type Thing {
     id: String!
     name: String!
-    things: [Thing]
 }
 
+input ThingInput {
+    id: String!
+    name: String!
+}
 
 type Mutation {
-    add_character(character: CharacterArg!): Int
-    create_account(account: AccountInput): Account
-    update_account (account: AccountInput): Account @permissions(roles:[])
-}
-
-type Address {
-    house_name_or_number: String
-    addr_line1: String
-    addr_line2: String
-    town: String
-    city: String
-    postCode: String
-}
-
-type Customer {
-    name: String!
-    address: Address
-}
-
-input AddressInput # @address(name: "Bob") {
-{
-    house_name_or_number: String
-    addr_line1: String
-    addr_line2: String
-    town: String
-    city: String
-    postCode: String
-}
-
-input CustomerFilter {
-    name: String!
-    address: AddressInput
-}
-
-#directive @address (
-#    name: String!
-#)
-#on INPUT_OBJECT
-
-
-input CustomerInput {
-    name: String!
-    address: AddressInput
-}
-
-type Bank @permissions(roles: [BANK]){
-    name: String!
-    privates: [String!]
-}
-
-type Client {
-    name: String!
+    add_thing(thing: ThingInput): Thing
+    delete_thing(thing: ThingInput): Thing
+    update_thing (thing: ThingInput): Thing @permissions(roles:[])
 }
 
 type Query {
-    bank: Bank @permissions(roles: [BANK]) @cheesiness(level: 10)
-    customer: Customer
-    client: Client
-
-    allPeople: [Person]
-    nicePeople: [Person]
-    nastyPeople: [Person]
-    find_all_in_episode(episode: episode!): [Character]
-    get_person(id: Int): Person
-    things: [Thing]
+    thing(id: String!): Thing
+    things: [Thing!]
 }
 
-type Subscription {
-    burp: String
+type Updated {
+    message: String
 }
 
-schema @permissions(roles: [BANK CUSTOMER])
+#type Subscription {
+#    updated: Updated
+#}
+
+schema @permissions(roles: [READ])
 {
     query: Query
     mutation: Mutation
-    subscription: Subscription
+#    subscription: Subscription
 }
-
-#fragment thingData on Thing {
-#    id
-#    name
-#}
-#
-
