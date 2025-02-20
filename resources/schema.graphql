@@ -7,35 +7,45 @@ directive @permissions (
 )
 on FIELD_DEFINITION | SCHEMA | OBJECT | MUTATION
 
-directive @cheesiness (
-    level: [Int!]!
-)
-on FIELD_DEFINITION
-
 # SCALARS
 
 scalar Date
 
+# INTERFACES
+
+interface Node {
+    id: ID!
+}
+
 # OBJECTS
 
-type Thing {
-    id: String!
+type Thing implements Node {
+    id: ID!
     name: String!
+    otherThings: [OtherThing!]
 }
+
+type OtherThing implements Node {
+    id: ID!
+    name: String!
+    thing: [Thing!]
+}
+
+# INPUT TYPES
 
 input ThingInput {
-    id: String!
+    id: ID!
     name: String!
 }
 
+# MUTATION
+
 type Mutation {
-    add_thing(thing: ThingInput): Thing
-    delete_thing(thing: ThingInput): Thing
-    update_thing (thing: ThingInput): Thing @permissions(roles:[])
+    create_thing (thing: ThingInput): Thing @permissions(roles:[])
 }
 
 type Query {
-    thing(id: String!): Thing
+    thing(id: ID!): Thing
     things: [Thing!]
 }
 
@@ -43,13 +53,12 @@ type Updated {
     message: String
 }
 
-#type Subscription {
-#    updated: Updated
-#}
+type Subscription {
+    updated: Updated
+}
 
-schema @permissions(roles: [READ])
-{
+schema {
     query: Query
     mutation: Mutation
-#    subscription: Subscription
+    subscription: Subscription
 }

@@ -3,6 +3,8 @@
             [migratus.core :as migratus]
             [clojure.java.browse :refer [browse-url]]))
 
+(println "\n\nL O A D I N G   U S E R   N A M E S P A C E !\n\n")
+
 (defn start
   []
   (system/start :dev)
@@ -30,8 +32,9 @@
   []
   (migratus/migrate system/migratus-config))
 
-(defn see
-  [msg o]
-  (println msg)
+(defn show
+  [o & {:keys [label] :as opts}]
+  (when label
+   (println label))
   (clojure.pprint/pprint o)
   o)

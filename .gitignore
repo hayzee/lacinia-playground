@@ -15,3 +15,5 @@ pom.xml.asc
 /lacinia-playground.mv.db
 /lacinia-playground.trace.db
 /lacinia-playground.lock.db
+/resources/schema+.edn
+/resources/schema.edn
