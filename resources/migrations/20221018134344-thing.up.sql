@@ -1,12 +1,12 @@
-create table thing
+CREATE TABLE thing
 (
-id text not null,
-name text not null
+id   INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+name VARCHAR(100) NOT NULL
 );
 
-create table other_thing
+CREATE TABLE other_thing
 (
-id text not null,
-name text not null,
-thing_id text not null
-)
+id       INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+name     VARCHAR(100),
+thing_id INT NOT NULL
+);

@@ -5,7 +5,7 @@
             [com.walmartlabs.lacinia.schema :as schema]
             [com.walmartlabs.lacinia.util :as util]
             [mount.core :refer [defstate]]
-            [lacinia-playground.attachments :as attachments])
+            [lacinia-playground.dbapi :as attachments])
   (:import (java.text SimpleDateFormat)))
 
 ; scalars
@@ -30,22 +30,30 @@
 (defn mk-thing
   [thing-id name]
   (schema/tag-with-type
-   {:id thing-id :name name}
-   :Thing))
+    {:id thing-id
+     :name name}
+    :Thing))
 
 (defn r-thing
   [context args value]
   (mk-thing "thing-id" "I am a Thing"))
 
+(defn mk-other-thing
+  [thing-id name]
+  (schema/tag-with-type
+    {:id thing-id
+     :name name}
+    :OtherThing))
+
 (defn r-thing-other-things
   [context args value]
-  (println args value)
-  [(mk-thing "thing-id2" "I am a Thing2")
-   (mk-thing "thing-id3" "I am a Thing3")])
+  [(mk-other-thing "thing-id2" "I am a Thing2")
+   (mk-other-thing "thing-id3" "I am a Thing3")])
 
 (def resolvers
   {:Query/thing r-thing
-   :Thing/otherThings r-thing-other-things})
+   :Thing/otherThings r-thing-other-things
+   :OtherThing/thing r-thing})
 
 (defn initiate-stream
   [context args stream]
@@ -75,12 +83,12 @@
   (try
     (let [parsed-schema (-> (io/resource "schema.graphql")
                             slurp
-                            (parser-schema/parse-schema #_(attachments/attachments))
+                            (parser-schema/parse-schema)
                             (spitfile "./resources/schema.edn")
                             (util/inject-scalar-transformers scalars)
                             (util/inject-resolvers resolvers)
                             (util/inject-streamers streamers)
-                            #_(spitfile "./resources/schema+.edn"))]
+                            (spitfile "./resources/schema+.edn"))]
       (schema/compile parsed-schema))
     (catch Exception e
       (println (st/root-cause

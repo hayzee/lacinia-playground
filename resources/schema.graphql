@@ -1,6 +1,6 @@
 # DIRECTIVES
 
-enum Role {CREATE READ UPDATE DELETE}
+enum Role {READ UPDATE}
 
 directive @permissions (
     roles: [Role!]!
@@ -28,7 +28,7 @@ type Thing implements Node {
 type OtherThing implements Node {
     id: ID!
     name: String!
-    thing: [Thing!]
+    thing: Thing!
 }
 
 # INPUT TYPES
@@ -38,10 +38,17 @@ input ThingInput {
     name: String!
 }
 
+input OtherThingInput {
+    id: ID!
+    name: String!
+    thingId: ID
+}
+
 # MUTATION
 
 type Mutation {
-    create_thing (thing: ThingInput): Thing @permissions(roles:[])
+    createThing (thing: ThingInput): Thing @permissions(roles:[UPDATE])
+    createOtherThing (otherthing: OtherThingInput): OtherThing @permissions(roles:[UPDATE])
 }
 
 type Query {
