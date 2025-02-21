@@ -1,6 +1,5 @@
-(ns lacinia-playground.dbapi
-  (:require [lacinia-playground.db :as db]
-            [com.walmartlabs.lacinia.schema :as schema])
+(ns lacinia-playground.api.db
+  (:require [lacinia-playground.db :as db])
   (:import (java.text SimpleDateFormat)))
 
 (defn create-thing

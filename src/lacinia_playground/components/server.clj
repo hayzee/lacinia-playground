@@ -17,15 +17,8 @@
 (alter-var-root #'com.walmartlabs.lacinia.pedestal2/enable-tracing-interceptor
                 (constantly (null-interceptor ::lp/enable-tracing)))
 
-;;; Use default options:
-(defstate service
-  :start (lp/default-service schema/schema nil))
-;
-;;; This is an adapted service map, that can be started and stopped.
-;;; From the REPL you can call http/start and http/stop on this service:
-(defstate runnable-service
-  :start (http/create-server service))
-;
 (defstate server
-          :start (http/start runnable-service)
+          :start (-> (lp/default-service schema/schema nil)
+                     (http/create-server)
+                     (http/start))
           :stop (http/stop server))

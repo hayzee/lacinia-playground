@@ -22,8 +22,6 @@
     (mount/start #'config/config
                  #'datasource/datasource
                  #'schema/schema
-                 #'server/service
-                 #'server/runnable-service
                  #'server/server
                  #'migratus-config)
     (migratus/migrate migratus-config)))
