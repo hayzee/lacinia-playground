@@ -1,6 +1,6 @@
 (defproject lacinia-playground "0.1.0-SNAPSHOT"
   :description "Playground project to try out some ideas with Lacinia and GraphQL"
-  :url "http://example.com/FIXME"
+  :url "http://www.hayzee.com/"
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
             :url  "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [
@@ -18,7 +18,7 @@
                  [aero "1.1.6"]
 
                  ; Database, JDBC, Pooling and Migrations
-                 [com.h2database/h2 "1.4.200"]
+                 ;[com.h2database/h2 "1.4.200"]
                  [com.github.seancorfield/next.jdbc "1.3.834"]
                  [hikari-cp "3.0.0"]
                  [migratus "1.4.4"]
@@ -32,6 +32,11 @@
 
   :profiles {:dev
              {:dependencies [
+
+                             ;org.postgresql/postgresql {:mvn/version "42.2.10"}
+                             ;io.zonky.test/embedded-postgres {:mvn/version "1.2.6"}
+                             ;io.zonky.test.postgres/embedded-postgres-binaries-linux-amd64 {:mvn/version "12.2.0"}
+                             ;io.zonky.test.postgres/embedded-postgres-binaries-windows-amd64 {:mvn/version "12.2.0"}
 
                              [com.h2database/h2 "1.4.200"]
                              [org.clojure/tools.namespace "1.3.0"]

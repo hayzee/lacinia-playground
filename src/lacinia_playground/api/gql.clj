@@ -1,5 +1,6 @@
 (ns lacinia-playground.api.gql
-  (:require [com.walmartlabs.lacinia.schema :as schema])
+  (:require [com.walmartlabs.lacinia.schema :as schema]
+            [lacinia-playground.api.db :as db])
   (:import (java.text SimpleDateFormat)))
 
 ; scalars
@@ -49,7 +50,8 @@
   [context args value]
   (println "args:" args)
   (println "value:" value)
-  (mk-thing "1" "Made"))
+  (let [thing (db/create-thing (-> args :thing :name))]
+    (mk-thing "1" "Made")))
 
 (def resolvers
   {:Query/thing r-thing
