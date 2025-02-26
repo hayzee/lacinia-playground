@@ -7,11 +7,11 @@
   (:import (io.zonky.test.db.postgres.embedded EmbeddedPostgres)
            (io.zonky.test.db.postgres.junit EmbeddedPostgresRules)))
 
-(defstate embedded-db
-          :start (do (taoensso.timbre/info "Starting embedded database")
-                     (EmbeddedPostgres/start))
-          :stop (do (taoensso.timbre/info "Stopping embedded database")
-                    (.close embedded-db)))
+(defstate ^{:on-reload :noop} embedded-db
+  :start (do (taoensso.timbre/info "Starting embedded database")
+             (EmbeddedPostgres/start))
+  :stop (do (taoensso.timbre/info "Stopping embedded database")
+            (.close embedded-db)))
 
 (println "\n\nL O A D I N G   U S E R   N A M E S P A C E !\n\n")
 
