@@ -5,7 +5,7 @@
             :url  "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [
                  ; Clojure
-                 [org.clojure/clojure "1.11.0"]
+                 [org.clojure/clojure "1.12.0"]
 
                  ; Lacinia/GraphQL
                  [com.walmartlabs/lacinia "1.2.2"]
@@ -18,7 +18,7 @@
                  [aero "1.1.6"]
 
                  ; Database, JDBC, Pooling and Migrations
-                 ;[com.h2database/h2 "1.4.200"]
+                 [org.postgresql/postgresql "42.7.4"]
                  [com.github.seancorfield/next.jdbc "1.3.834"]
                  [hikari-cp "3.0.0"]
                  [migratus "1.4.4"]
@@ -33,17 +33,20 @@
   :profiles {:dev
              {:dependencies [
 
-                             ;org.postgresql/postgresql {:mvn/version "42.2.10"}
-                             ;io.zonky.test/embedded-postgres {:mvn/version "1.2.6"}
-                             ;io.zonky.test.postgres/embedded-postgres-binaries-linux-amd64 {:mvn/version "12.2.0"}
-                             ;io.zonky.test.postgres/embedded-postgres-binaries-windows-amd64 {:mvn/version "12.2.0"}
-
                              [com.h2database/h2 "1.4.200"]
-                             [org.clojure/tools.namespace "1.3.0"]
+
+                             [io.zonky.test/embedded-postgres "2.1.0"]
+                             ;[io.zonky.test.postgres/embedded-postgres-binaries-darwin-amd64 "17.2.0"]
+                             ;[io.zonky.test.postgres/embedded-postgres-binaries-linux-amd64 "17.2.0"]
+                             [io.zonky.test.postgres/embedded-postgres-binaries-windows-amd64 "17.2.0"]
+
+                             ;[org.clojure/tools.namespace "1.3.0"]
 
                              ]}}
 
   :repl-options {:init-ns user}
 
   :main lacinia-playground.core
-  :aot [lacinia-playground.core])
+  :aot [lacinia-playground.core]
+
+  )

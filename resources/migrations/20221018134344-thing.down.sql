@@ -1,2 +1,5 @@
-DROP TABLE thing;
-DROP TABLE other_thing;
+DROP TABLE IF EXISTS thing;
+
+--;
+
+DROP TABLE IF EXISTS other_thing;

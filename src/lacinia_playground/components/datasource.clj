@@ -15,6 +15,14 @@
   (logging/log :info (str "Closing Hikari pool:" datasource))
   (.close datasource))
 
+(def ^:dynamic start-datasource
+  (fn []
+    (initialise-hikari-pool)))
+
+(def ^:dynamic stop-datasource
+  (fn [datasource]
+    (close-hikari-pool datasource)))
+
 (defstate datasource
-          :start (initialise-hikari-pool)
-          :stop (close-hikari-pool datasource))
+  :start (start-datasource)
+  :stop (stop-datasource datasource))
