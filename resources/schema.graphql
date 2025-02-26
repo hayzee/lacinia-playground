@@ -34,7 +34,6 @@ type OtherThing implements Node {
 # INPUT TYPES
 
 input ThingInput {
-    id: ID!
     name: String!
 }
 

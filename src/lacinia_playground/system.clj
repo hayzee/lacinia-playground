@@ -15,21 +15,24 @@
             (:migratus config/config)
             {:db {:datasource datasource/datasource}}))
 
+(def all-states
+  [#'config/config
+   #'datasource/datasource
+   #'schema/schema
+   #'server/server
+   #'migratus-config])
+
 (defn start
   [profile]
   (logging/log :info (str "Starting " profile " System"))
   (binding [config/profile profile]
-    (mount/start #'config/config
-                 #'datasource/datasource
-                 #'schema/schema
-                 #'server/server
-                 #'migratus-config)
+    (apply mount/start all-states)
     (migratus/migrate migratus-config)))
 
 (defn stop
   []
   (logging/log :info "Stopping System")
-  (mount/stop))
+  (apply mount/stop all-states))
 
 (defn restart
   []

@@ -48,10 +48,8 @@
 
 (defn m-create-thing
   [context args value]
-  (println "args:" args)
-  (println "value:" value)
   (let [thing (db/create-thing (-> args :thing :name))]
-    (mk-thing "1" "Made")))
+    (mk-thing (:id thing) (:name thing))))
 
 (def resolvers
   {:Query/thing r-thing

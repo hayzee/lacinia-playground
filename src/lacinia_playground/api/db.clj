@@ -4,15 +4,17 @@
 
 (defn create-thing
   [name]
-  (db/execute! ["
-    INSERT INTO thing (name) VALUES (?)
-  " name]))
+  (db/execute-one! ["
+    INSERT INTO thing (id, name) VALUES (gen_random_uuid(), ?)
+    RETURNING *
+    " name]))
 
 (defn update-thing
   [id name]
-  (db/execute! ["
+  (db/execute-one! ["
     UPDATE thing SET name = ? WHERE id = ?
-  " name id]))
+    RETURNING *
+    " name id]))
 
 (defn get-thing
   [id]

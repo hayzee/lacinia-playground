@@ -16,25 +16,31 @@
 (println "\n\nL O A D I N G   U S E R   N A M E S P A C E !\n\n")
 
 (defn start
-  []
+  [& {:keys [start-browser]
+      :or {start-browser true}}]
   (mount/start #'embedded-db)
   (binding [lacinia-playground.components.datasource/start-datasource
             (fn []
               (taoensso.timbre/info "Starting embedded datasource")
               (.getPostgresDatabase ^EmbeddedPostgres embedded-db))]
    (system/start :dev))
-  (browse-url "http://localhost:8888/ide"))
+  (when start-browser
+    (browse-url "http://localhost:8888/ide")))
 
-(defn stop []
+(defn stop
+  [& {:keys [stop-db]
+      :or {stop-db false}}]
   (binding [lacinia-playground.components.datasource/stop-datasource
             (fn [ds]
               (taoensso.timbre/info "NOT STOPPING EMBEDDED DATASOURCE")
               nil)]
-    (system/stop)))
+    (system/stop))
+  (when stop-db
+    (mount/stop #'embedded-db)))
 
 (defn restart []
   (stop)
-  (start))
+  (start :start-browser false))
 
 (defn reset-migrations
   []
