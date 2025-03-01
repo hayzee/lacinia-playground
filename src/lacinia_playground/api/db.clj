@@ -18,7 +18,7 @@
 
 (defn get-thing
   [id]
-  (db/execute! ["
+  (db/execute-one! ["
     SELECT * FROM thing WHERE ID = ?
   " id]))
 

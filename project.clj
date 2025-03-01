@@ -12,7 +12,7 @@
                  [com.walmartlabs/lacinia-pedestal "1.3.1"]
 
                  ; Components
-                 [mount "0.1.16"]
+                 [mount "0.1.21"]
 
                  ; Configuration
                  [aero "1.1.6"]
@@ -33,14 +33,12 @@
   :profiles {:dev
              {:dependencies [
 
-                             [com.h2database/h2 "1.4.200"]
-
                              [io.zonky.test/embedded-postgres "2.1.0"]
                              ;[io.zonky.test.postgres/embedded-postgres-binaries-darwin-amd64 "17.2.0"]
                              ;[io.zonky.test.postgres/embedded-postgres-binaries-linux-amd64 "17.2.0"]
                              [io.zonky.test.postgres/embedded-postgres-binaries-windows-amd64 "17.2.0"]
 
-                             ;[org.clojure/tools.namespace "1.3.0"]
+                             [org.clojure/tools.namespace "1.5.0"]
 
                              ]}}
 

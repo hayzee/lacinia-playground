@@ -3,9 +3,12 @@
             [migratus.core :as migratus]
             [clojure.java.browse :refer [browse-url]]
             [next.jdbc :as jdbc]
-            [mount.core :as mount :refer [defstate]])
+            [mount.core :as mount :refer [defstate]]
+            [clojure.tools.namespace.repl :as nr])
   (:import (io.zonky.test.db.postgres.embedded EmbeddedPostgres)
            (io.zonky.test.db.postgres.junit EmbeddedPostgresRules)))
+
+(taoensso.timbre/set-level! :info)
 
 (defstate ^{:on-reload :noop} embedded-db
   :start (do (taoensso.timbre/info "Starting embedded database")
@@ -40,6 +43,7 @@
 
 (defn restart []
   (stop)
+  (nr/refresh)
   (start :start-browser false))
 
 (defn reset-migrations

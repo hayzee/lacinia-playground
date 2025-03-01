@@ -31,8 +31,12 @@
 
 (defn r-thing
   [context args value]
-  (println args)
-  (mk-thing "thing-id" "I am a Thing"))
+  (when-let [thing (db/get-thing (:id args))]
+    (mk-thing (:id thing) (:name thing))))
+
+(defn r-things
+  [context args value]
+  (mapv #(mk-thing (:id %) (:name %)) (db/get-things)))
 
 (defn mk-other-thing
   [thing-id name]
@@ -53,6 +57,7 @@
 
 (def resolvers
   {:Query/thing r-thing
+   :Query/things r-things
    :Thing/otherThings r-thing-other-things
    :OtherThing/thing r-thing
    :Mutation/createThing m-create-thing})

@@ -22,17 +22,7 @@
 
                   :dev   {
                           :log-level :warn
-
-                          ; hikari
-                          :datasource-options {:adapter "h2"
-                                               :url     "jdbc:h2:./lacinia-playground;AUTO_SERVER=TRUE"}
                           }
-
                   :test  {
                           :log-level :warn
-
-                          ; hikari
-                          :datasource-options {:adapter "h2"
-                                               :url     "jdbc:h2:./lacinia-playground;AUTO_SERVER=TRUE"}
-
                           }}]
